@@ -7,6 +7,9 @@ async function loadCountry() {
   );
   let reply = await response.json();
 
+  // clear the old content
+  output.innerHTML = "";
+
   for (let country of reply) {
     // create a couple of HTML elements
     let heading = document.createElement("h4");
@@ -18,9 +21,6 @@ async function loadCountry() {
     let image = document.createElement("img");
     image.src = country.flag;
     image.width = "100";
-
-    // clear the old content
-    output.innerHTML = "";
 
     // add the elements to our div
     output.appendChild(heading);
