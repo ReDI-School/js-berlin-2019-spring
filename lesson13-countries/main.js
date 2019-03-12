@@ -8,7 +8,7 @@ async function loadCountry() {
   let reply = await response.json();
 
   // clear the old content
-  output.innerHTML = "";
+  outputElement.innerHTML = "";
 
   for (let country of reply) {
     // create a couple of HTML elements
@@ -23,8 +23,8 @@ async function loadCountry() {
     image.width = "100";
 
     // add the elements to our div
-    output.appendChild(heading);
-    output.appendChild(p);
-    output.appendChild(image);
+    outputElement.appendChild(heading);
+    outputElement.appendChild(p);
+    outputElement.appendChild(image);
   }
 }
