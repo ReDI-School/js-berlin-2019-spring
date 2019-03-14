@@ -12,8 +12,8 @@ let appCode = undefined;
 // ### Otherwise, please pass the appId / appCode as a URL parameter
 if (appId === undefined || appCode === undefined) {
     let url = new URL(window.location.href);
-    let appId = url.searchParams.get("appId");
-    let appCode = url.searchParams.get("appCode");
+    appId = url.searchParams.get("appId");
+    appCode = url.searchParams.get("appCode");
     if (appId === null || appCode === null) {
         document.body.innerHTML = "Please provide an appId/appCode, e.g. <tt>" + window.location.href + "?appId=xxx&appCode=xxx</tt>. Get a free id at: <a href='https://go.engage.here.com/freemium'>https://go.engage.here.com/freemium</a>";
         throw new Error("Please provide an appId/appCode. See https://go.engage.here.com/freemium")
