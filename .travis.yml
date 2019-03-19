@@ -1,7 +1,7 @@
 language: sh
 
 before_deploy:
-  - find . -not -name '.*' -maxdepth 1 -type d > dirs
+  - find -s . -not -name '.*' -maxdepth 1 -type d > dirs
 
 deploy:
   provider: pages
