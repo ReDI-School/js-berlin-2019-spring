@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ReDI-School/js-berlin-2019-spring.svg?branch=master)](https://travis-ci.org/ReDI-School/js-berlin-2019-spring)
+
 # Spring 2019 Samples
 
 Here you can find the sample source code for the Basic Frontent JavaScript Spring 2019 [ReDI school](https://www.redi-school.org/) Berlin course.
