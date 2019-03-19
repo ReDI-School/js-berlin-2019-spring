@@ -1,9 +1,11 @@
-// Add the HERE appId / appCode:
-let appId = "";
-let appCode = "";
+let pageUrl = new URL(window.location.href);
 
-// Add the Mapbox access token:
-let accessToken = "";
+// Get the HERE appId / appCode:
+let appId = pageUrl.searchParams.get("appId");
+let appCode = pageUrl.searchParams.get("appCode");
+
+// Get the Mapbox access token:
+let accessToken = pageUrl.searchParams.get("accessToken");
 
 // Initialize Leaflet
 let mymap = L.map("map").setView([52.51, 13.37], 13);
