@@ -1,3 +1,5 @@
+let pageUrl = new URL(window.location.href);
+
 let YOUR_API_KEY = pageUrl.searchParams.get("apiKey");
 
 function getLocation() {
