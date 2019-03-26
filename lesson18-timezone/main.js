@@ -16,7 +16,7 @@ function printLocation(location) {
 }
 
 async function getTimeZoneLocalTime(lat, lng) {
-    let url = `http://api.timezonedb.com/v2.1/get-time-zone?key=${YOUR_API_KEY}&format=json&by=position&lat=${lat}&lng=${lng}`;
+    let url = `https://api.timezonedb.com/v2.1/get-time-zone?key=${YOUR_API_KEY}&format=json&by=position&lat=${lat}&lng=${lng}`;
 
     let response = await fetch(url);
     let reply = await response.json();
