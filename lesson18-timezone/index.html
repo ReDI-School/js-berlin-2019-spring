@@ -1,0 +1,30 @@
+<html>
+  <body>
+    <button onclick="getLocation()">Get my location</button>
+    <h2>Step 1.</h2>
+    <p>My latitude is <span id="lat"></span></p>
+    <p>My longitude is <span id="lng"></span></p>
+    <h2>Step 2.</h2>
+    <p>My time zone is <span id="tz"></span></p>
+    <h2>Step 3.</h2>
+    <p>The local time for my time zone is <span id="locTime"></span></p>
+    <p>
+      Friends time zone
+      <select id="frndTimeZones">
+          <option>Friend's Time Zone</option>
+      </select>
+      <button onclick="calculateFriendsTime()">
+        Calculate Friend's Time
+      </button>
+    </p>
+
+    <hr />
+    <h2>Step 4.</h2>
+    <p>The local time for your friend is: <span id="frndLocTime"></span></p>
+
+    <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
+
