@@ -42,12 +42,12 @@ async function renderPolygon() {
     // note - HERE API returns a string with the
     // lat and lon separated by a comma. We need to split
     // that to get a Leaflet polygon
-    let coordinates = [];
+    let leafletCoords = [];
     for (let coordinate of isoline) {
-        coordinates.push(coordinate.split(","));
+        leafletCoords.push(coordinate.split(","));
     }
 
-    let polygon = L.polygon(coordinates);
+    let polygon = L.polygon(leafletCoords);
     polygon.addTo(mymap);
 }
 
