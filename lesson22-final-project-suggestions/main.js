@@ -13,6 +13,7 @@ let projects = [
     },
     {
         name: "Play Date for Pets",
+        owner: "Bahara",
         description: [
             "API for getting data about pet owners and pet lovers",
             "Show on map",
@@ -61,6 +62,7 @@ let projects = [
     },
     {
         name: "Leftovers",
+        owner: "Bahara",
         description: [
             "Scan barcode of leftover foods, get recipes for them",
             "Find a library for barcode scanning",
