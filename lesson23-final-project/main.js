@@ -4,7 +4,7 @@ let weekViewElement = document.getElementById("weekView");
 let today = moment();
 
 // this is the first day of this week
-let currentWeek = today.clone().subtract(today.day(), "days");
+let currentWeek = today.clone().startOf("week");
 
 renderWeekView(currentWeek);
 
@@ -13,10 +13,13 @@ function renderWeekView(firstDay) {
     // clear the previous view
     weekViewElement.innerHTML = "";
 
+    const MondayIndex = 1;
+    const FridayIndex = 5;
+
     // we're only going to show Monday to Friday.
     // Remember - JavaScript starts the week on Sunday (0),
     // so we need to count from 1 (Monday) to 5 (Friday)
-    for (let i = 1; i < 6; ++i) {
+    for (let i = MondayIndex; i <= FridayIndex; ++i) {
         // create a new div for every day
         let dayDivElement = document.createElement("div");
 
