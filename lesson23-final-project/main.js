@@ -61,13 +61,13 @@ function renderWeekView(firstDay) {
 
         // Note - month starts counting at zero, but humans start
         // counting from 1
-        let todayString = `${day.date()}.${day.month() + 1}`;
+        let dayString = day.format("DD.MM");
 
         // if we're rendering today, make the string bold
         if (isSameDay(today, day)) {
-            todayString = "<b>" + todayString + "</b>";
+            dayString = "<b>" + dayString + "</b>";
         }
-        dayDivElement.innerHTML = todayString;
+        dayDivElement.innerHTML = dayString;
 
         renderDayView(day, dayDivElement);
 
