@@ -6,7 +6,34 @@ let today = moment();
 // this is the first day of this week
 let currentWeek = today.clone().startOf("week");
 
-renderWeekView(currentWeek);
+let events = [
+    {
+        start: moment(),
+        end: moment().add(1, 'hour'),
+        title: "My important meeting"
+    },
+    {
+        start: moment().add(1, 'day'),
+        end: moment().add(1, 'day').add(1, 'hour'),
+        title: "My more important meeting"
+    }
+];
+
+function renderDayView(day, dayDivElement) {
+    // go through all our events
+    for (let event of events) {
+        if (event.start.year() === day.year() && event.start.dayOfYear() === day.dayOfYear()) {
+            // the event starts today, render it!
+            let eventDivElement = document.createElement("div");
+            eventDivElement.textContent = event.start.format("HH:mm")
+                + " - "
+                + event.end.format("HH:mm")
+                + ": "
+                + event.title;
+            dayDivElement.appendChild(eventDivElement);
+        }
+    }
+}
 
 function renderWeekView(firstDay) {
 
@@ -38,6 +65,8 @@ function renderWeekView(firstDay) {
         }
         dayDivElement.innerHTML = todayString;
 
+        renderDayView(day, dayDivElement);
+
         // This is how you add a 'class' to a HTML element
         dayDivElement.classList.add("day");
         weekViewElement.appendChild(dayDivElement);
@@ -45,11 +74,13 @@ function renderWeekView(firstDay) {
 }
 
 function nextWeek() {
-    currentWeek.add(7, "days");
+    currentWeek.add(1, "week");
     renderWeekView(currentWeek);
 }
 
 function previousWeek() {
-    currentWeek.subtract(7, "days");
+    currentWeek.subtract(1, "week");
     renderWeekView(currentWeek);
 }
+
+renderWeekView(currentWeek);
