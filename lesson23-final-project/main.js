@@ -19,10 +19,14 @@ let events = [
     }
 ];
 
+function isSameDay(day1, day2) {
+    return day1.year() === day2.year() && day1.dayOfYear() === day2.dayOfYear();
+}
+
 function renderDayView(day, dayDivElement) {
     // go through all our events
     for (let event of events) {
-        if (event.start.year() === day.year() && event.start.dayOfYear() === day.dayOfYear()) {
+        if (isSameDay(event.start, day)) {
             // the event starts today, render it!
             let eventDivElement = document.createElement("div");
             eventDivElement.textContent = event.start.format("HH:mm")
@@ -60,7 +64,7 @@ function renderWeekView(firstDay) {
         let todayString = `${day.date()}.${day.month() + 1}`;
 
         // if we're rendering today, make the string bold
-        if (today.year() === day.year() && today.dayOfYear() === day.dayOfYear()) {
+        if (isSameDay(today, day)) {
             todayString = "<b>" + todayString + "</b>";
         }
         dayDivElement.innerHTML = todayString;
