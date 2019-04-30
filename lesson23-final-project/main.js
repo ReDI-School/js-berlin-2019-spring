@@ -3,21 +3,31 @@ let weekViewElement = document.getElementById("weekView");
 // this is today's date
 let today = moment();
 
-// this is the first day of this week
-let currentWeek = today.clone().startOf("week");
+// this variable points to the Sunday of the
+// week that is currently being rendered
+let currentSunday = today.clone().startOf("week");
 
-let events = [
-    {
-        start: moment(),
-        end: moment().add(1, 'hour'),
-        title: "My important meeting"
-    },
-    {
-        start: moment().add(1, 'day'),
-        end: moment().add(1, 'day').add(1, 'hour'),
-        title: "My more important meeting"
+let events = [];
+
+// This function saves all the events to local storage
+function saveEvents() {
+    localStorage.setItem("EVENTS", JSON.stringify(events));
+}
+
+// This function loads all the events from local storage
+function loadEvents() {
+    let eventString = localStorage.getItem("EVENTS");
+    if (eventString !== null) {
+        events = JSON.parse(eventString);
+        for (let event of events) {
+            // note - JSON.stringify converts all our
+            // moment() objects to strings. We need to
+            // turn those strings into moment objects again!
+            event.start = moment(event.start);
+            event.end = moment(event.end);
+        }
     }
-];
+}
 
 function isSameDay(day1, day2) {
     return day1.year() === day2.year() && day1.dayOfYear() === day2.dayOfYear();
@@ -61,7 +71,7 @@ function renderWeekView(firstDay) {
 
         // Note - month starts counting at zero, but humans start
         // counting from 1
-        let dayString = day.format("DD.MM");
+        let dayString = day.format("ddd, DD.MM");
 
         // if we're rendering today, make the string bold
         if (isSameDay(today, day)) {
@@ -78,13 +88,32 @@ function renderWeekView(firstDay) {
 }
 
 function nextWeek() {
-    currentWeek.add(1, "week");
-    renderWeekView(currentWeek);
+    currentSunday.add(1, "week");
+    renderWeekView(currentSunday);
 }
 
 function previousWeek() {
-    currentWeek.subtract(1, "week");
-    renderWeekView(currentWeek);
+    currentSunday.subtract(1, "week");
+    renderWeekView(currentSunday);
 }
 
-renderWeekView(currentWeek);
+let eventTileElement = document.getElementById("eventTitle");
+let eventStartDateElement = document.getElementById("eventStartDate");
+let eventStartTimeElement = document.getElementById("eventStartTime");
+let eventEndDateElement = document.getElementById("eventEndDate");
+let eventEndTimeElement = document.getElementById("eventEndTime");
+
+function addEvent() {
+    let newEvent = {
+        title: eventTileElement.value,
+        start: moment(eventStartDateElement.value + " " + eventStartTimeElement.value),
+        end: moment(eventEndDateElement.value + " " + eventEndTimeElement.value)
+    }
+
+    events.push(newEvent);
+    saveEvents();
+    renderWeekView(currentSunday);
+}
+
+loadEvents();
+renderWeekView(currentSunday);
