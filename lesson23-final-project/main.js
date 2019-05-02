@@ -10,12 +10,11 @@ for (let region of holidayRegions) {
 }
 
 // this is today's date
-let today = moment().subtract(10, 'hour');
+let today = moment();
 
 // get the timezone, moment can already do that!
 //make sure you import the moment-timezone-with-data script in your html file
 let timezone = moment.tz.guess();
-console.log(timezone);
 
 // this variable points to the Sunday of the
 // week that is currently being rendered
@@ -44,7 +43,10 @@ function loadEvents() {
 }
 
 function isSameDay(day1, day2) {
-    return day1.year() === day2.year() && day1.dayOfYear() === day2.dayOfYear();
+    // we have to convert the moment objects to UTC times so that we can compare them with regard to timezones
+    let day1UTC = day1.clone().utc();
+    let day2UTC = day2.clone().utc();
+    return day1UTC.year() === day2UTC.year() && day1UTC.dayOfYear() === day2UTC.dayOfYear();
 }
 
 function renderDayView(day, dayDivElement) {
@@ -54,17 +56,17 @@ function renderDayView(day, dayDivElement) {
     if (holiday) {
         let holidayEventElement = document.createElement('div');
         holidayEventElement.textContent = 'Holiday: ' + holiday;
+        dayDivElement.classList.add("holiday");
         dayDivElement.appendChild(holidayEventElement);
-        dayDivElement.style.backgroundColor = "pink";
     }
     // go through all our events
     for (let event of events) {
         if (isSameDay(event.start, day)) {
             // the event starts today, render it!
             let eventDivElement = document.createElement("div");
-            eventDivElement.textContent = event.start.tz(timezone).format("HH:mm")
+            eventDivElement.textContent = event.start.clone().tz(timezone).format("HH:mm")
                 + " - "
-                + event.end.tz(timezone).format("HH:mm")
+                + event.end.clone().tz(timezone).format("HH:mm")
                 + ": "
                 + event.title;
             dayDivElement.appendChild(eventDivElement);
@@ -145,12 +147,8 @@ function changeTimeZone() {
     // set the default timezone, all new moment objects will have this new timezone
     moment.tz.setDefault(tz);
     today = today.tz(tz)
-    // when updating the week, it can happen that we go back 12 hours and go from Monday to Sunday
-    // to solve this problem we go forward one day and ask moment to get us back to the start of
-    // the week
-    currentSunday = currentSunday.tz(tz).add(1, 'day').startOf("week");
+    currentSunday = today.clone().startOf("week");
     renderWeekView(currentSunday);
 }
 loadEvents();
 renderWeekView(currentSunday);
-'America/Cambridge_Bay'
