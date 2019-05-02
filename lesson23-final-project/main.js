@@ -1,7 +1,21 @@
 let weekViewElement = document.getElementById("weekView");
 
+
+//we define here all of the holidayRegions that we want in our calendar
+//make sure you import the moment-holiday-pkg script in your html file
+//this should run before we create any moment objects, otherwise it wont work!
+let holidayRegions = ['Germany', 'United States', 'United Kingdom', 'Switzerland'];
+for (let region of holidayRegions) {
+    moment.modifyHolidays.add(region)
+}
+
 // this is today's date
-let today = moment();
+let today = moment().subtract(10, 'hour');
+
+// get the timezone, moment can already do that!
+//make sure you import the moment-timezone-with-data script in your html file
+let timezone = moment.tz.guess();
+console.log(timezone);
 
 // this variable points to the Sunday of the
 // week that is currently being rendered
@@ -34,14 +48,23 @@ function isSameDay(day1, day2) {
 }
 
 function renderDayView(day, dayDivElement) {
+    // isHoliday() will return the name(s) of holidays on this day if there are any
+    // otherwise it will return false;
+    let holiday = day.isHoliday();
+    if (holiday) {
+        let holidayEventElement = document.createElement('div');
+        holidayEventElement.textContent = 'Holiday: ' + holiday;
+        dayDivElement.appendChild(holidayEventElement);
+        dayDivElement.style.backgroundColor = "pink";
+    }
     // go through all our events
     for (let event of events) {
         if (isSameDay(event.start, day)) {
             // the event starts today, render it!
             let eventDivElement = document.createElement("div");
-            eventDivElement.textContent = event.start.format("HH:mm")
+            eventDivElement.textContent = event.start.tz(timezone).format("HH:mm")
                 + " - "
-                + event.end.format("HH:mm")
+                + event.end.tz(timezone).format("HH:mm")
                 + ": "
                 + event.title;
             dayDivElement.appendChild(eventDivElement);
@@ -115,5 +138,19 @@ function addEvent() {
     renderWeekView(currentSunday);
 }
 
+let timezoneElement = document.getElementById('timezone');
+function changeTimeZone() {
+    let tz = timezoneElement.value;
+    timezone = tz;
+    // set the default timezone, all new moment objects will have this new timezone
+    moment.tz.setDefault(tz);
+    today = today.tz(tz)
+    // when updating the week, it can happen that we go back 12 hours and go from Monday to Sunday
+    // to solve this problem we go forward one day and ask moment to get us back to the start of
+    // the week
+    currentSunday = currentSunday.tz(tz).add(1, 'day').startOf("week");
+    renderWeekView(currentSunday);
+}
 loadEvents();
 renderWeekView(currentSunday);
+'America/Cambridge_Bay'

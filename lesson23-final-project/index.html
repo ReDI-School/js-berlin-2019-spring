@@ -12,10 +12,16 @@
         </style>
         <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
         <script src="https://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+        <script src="https://unpkg.com/moment-holiday/build/moment-holiday-pkg.min.js"></script>
     </head>
     <body>
         <button onclick="previousWeek()">Previous week</button>
         <button onclick="nextWeek()">Next week</button>
+        <span>TimeZone: </span>
+        <select id="timezone" onchange="changeTimeZone()">
+            <option value="Europe/Berlin">Berlin</option>
+            <option value="America/Mexico_City">Mexico City</option>
+        </select>
         <div id="weekView"></div>
 
         <br/><br/>
