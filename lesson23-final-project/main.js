@@ -1,6 +1,5 @@
 let weekViewElement = document.getElementById("weekView");
 
-
 //we define here all of the holidayRegions that we want in our calendar
 //make sure you import the moment-holiday-pkg script in your html file
 //this should run before we create any moment objects, otherwise it wont work!
@@ -10,7 +9,7 @@ for (let region of holidayRegions) {
 }
 
 // this is today's date
-let today = moment();
+let today = moment().utc();
 
 // get the timezone, moment can already do that!
 //make sure you import the moment-timezone-with-data script in your html file
@@ -36,8 +35,8 @@ function loadEvents() {
             // note - JSON.stringify converts all our
             // moment() objects to strings. We need to
             // turn those strings into moment objects again!
-            event.start = moment(event.start);
-            event.end = moment(event.end);
+            event.start = moment.utc(event.start);
+            event.end = moment.utc(event.end);
         }
     }
 }
@@ -62,9 +61,11 @@ function renderDayView(day, dayDivElement) {
     // go through all our events
     for (let event of events) {
         if (isSameDay(event.start, day)) {
+            let eventStart = event.start.clone().tz(timezone);
+            console.log(eventStart, day);
             // the event starts today, render it!
             let eventDivElement = document.createElement("div");
-            eventDivElement.textContent = event.start.clone().tz(timezone).format("HH:mm")
+            eventDivElement.textContent = eventStart.format("HH:mm")
                 + " - "
                 + event.end.clone().tz(timezone).format("HH:mm")
                 + ": "
@@ -100,9 +101,9 @@ function renderWeekView(firstDay) {
 
         // if we're rendering today, make the string bold
         if (isSameDay(today, day)) {
-            dayString = "<b>" + dayString + "</b>";
+            dayDivElement.classList.add("today");
         }
-        dayDivElement.innerHTML = dayString;
+        dayDivElement.textContent = dayString;
 
         renderDayView(day, dayDivElement);
 
@@ -131,8 +132,8 @@ let eventEndTimeElement = document.getElementById("eventEndTime");
 function addEvent() {
     let newEvent = {
         title: eventTileElement.value,
-        start: moment(eventStartDateElement.value + " " + eventStartTimeElement.value),
-        end: moment(eventEndDateElement.value + " " + eventEndTimeElement.value)
+        start: moment.tz(eventStartDateElement.value + " " + eventStartTimeElement.value, timezone).utc(),
+        end: moment.tz(eventEndDateElement.value + " " + eventEndTimeElement.value, timezone).utc()
     }
 
     events.push(newEvent);
@@ -144,11 +145,8 @@ let timezoneElement = document.getElementById('timezone');
 function changeTimeZone() {
     let tz = timezoneElement.value;
     timezone = tz;
-    // set the default timezone, all new moment objects will have this new timezone
-    moment.tz.setDefault(tz);
-    today = today.tz(tz)
-    currentSunday = today.clone().startOf("week");
     renderWeekView(currentSunday);
 }
+
 loadEvents();
 renderWeekView(currentSunday);
