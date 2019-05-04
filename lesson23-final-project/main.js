@@ -60,9 +60,8 @@ function renderDayView(day, dayDivElement) {
     }
     // go through all our events
     for (let event of events) {
-        if (isSameDay(event.start, day)) {
-            let eventStart = event.start.clone().tz(timezone);
-            console.log(eventStart, day);
+        let eventStart = event.start.clone().tz(timezone);
+        if (isSameDay(eventStart, day)) {
             // the event starts today, render it!
             let eventDivElement = document.createElement("div");
             eventDivElement.textContent = eventStart.format("HH:mm")
