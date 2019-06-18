@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <style>
+            #weekView {
+                display: flex;
+            }
+            .day {
+                padding: 5px;
+                margin: 5px;
+                border: 1px solid black;
+            }
+            .holiday {
+                background-color: #a9f03e50
+            }
+            .today {
+                border: 3px solid gray;
+            }
+        </style>
+        <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+        <script src="https://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+        <script src="https://unpkg.com/moment-holiday/build/moment-holiday-pkg.min.js"></script>
+    </head>
+    <body>
+        <button onclick="previousWeek()">Previous week</button>
+        <button onclick="nextWeek()">Next week</button>
+        <span>TimeZone: </span>
+        <select id="timezone" onchange="changeTimeZone()">
+            <option value="Europe/Berlin">Berlin</option>
+            <option value="America/Mexico_City">Mexico City</option>
+        </select>
+        <div id="weekView"></div>
+
+        <br/><br/>
+
+        <input id="eventTitle" type="text" placeholder="title">
+        <input id="eventStartDate" type="date" placeholder="start">
+        <input id="eventStartTime" type="time">
+        <input id="eventEndDate" type="date" placeholder="end">
+        <input id="eventEndTime" type="time">
+        <button onclick="addEvent()">Add</button>
+
+        <script src="main.js"></script>
+    </body>
+</html>
