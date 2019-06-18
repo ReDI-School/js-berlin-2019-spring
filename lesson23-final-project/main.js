@@ -61,12 +61,13 @@ function renderDayView(day, dayDivElement) {
     // go through all our events
     for (let event of events) {
         let eventStart = event.start.clone().tz(timezone);
+        let eventEnd = event.end.clone().tz(timezone);
         if (isSameDay(eventStart, day)) {
             // the event starts today, render it!
             let eventDivElement = document.createElement("div");
             eventDivElement.textContent = eventStart.format("HH:mm")
                 + " - "
-                + event.end.clone().tz(timezone).format("HH:mm")
+                + eventEnd.format("HH:mm")
                 + ": "
                 + event.title;
             dayDivElement.appendChild(eventDivElement);
@@ -129,10 +130,12 @@ let eventEndDateElement = document.getElementById("eventEndDate");
 let eventEndTimeElement = document.getElementById("eventEndTime");
 
 function addEvent() {
+    let eventStartString = eventStartDateElement.value + " " + eventStartTimeElement.value;
+    let eventEndString = eventEndDateElement.value + " " + eventEndTimeElement.value;
     let newEvent = {
         title: eventTileElement.value,
-        start: moment.tz(eventStartDateElement.value + " " + eventStartTimeElement.value, timezone).utc(),
-        end: moment.tz(eventEndDateElement.value + " " + eventEndTimeElement.value, timezone).utc()
+        start: moment.tz(eventStartString, timezone).utc(),
+        end: moment.tz(eventEndString, timezone).utc()
     }
 
     events.push(newEvent);
@@ -142,8 +145,7 @@ function addEvent() {
 
 let timezoneElement = document.getElementById('timezone');
 function changeTimeZone() {
-    let tz = timezoneElement.value;
-    timezone = tz;
+    timezone = timezoneElement.value;
     renderWeekView(currentSunday);
 }
 
